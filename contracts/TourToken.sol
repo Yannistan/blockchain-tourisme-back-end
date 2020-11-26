@@ -8,7 +8,7 @@ contract TourToken is ERC777, Ownable {
         address owner_,
         uint256 initialSupply,
         address[] memory defaultOperators
-    ) public ERC777("Tourisme", "TRM", defaultOperators) {
+    ) public ERC777("Tour", "TRM", defaultOperators) {
         transferOwnership(owner_);
         _mint(owner(), initialSupply, "", "");
     }

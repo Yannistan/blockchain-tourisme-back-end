@@ -5,7 +5,7 @@ const { expect } = require('chai');
 
 const TourToken = contract.fromArtifact('TourToken');
 
-describe('Tour', async function () {
+describe('TourToken', async function () {
   const NAME = 'Tour';
   const SYMBOL = 'TRM';
   const DECIMALS = 18;
@@ -37,6 +37,6 @@ describe('Tour', async function () {
   });
 
   it('mints initial supply to owner', async function () {
-    expect(await this.gold.balanceOf(owner)).to.be.a.bignumber.equal(INITIAL_SUPPLY);
+    expect(await this.tour.balanceOf(owner)).to.be.a.bignumber.equal(INITIAL_SUPPLY);
   });
 });

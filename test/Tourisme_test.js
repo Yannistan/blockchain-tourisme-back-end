@@ -11,6 +11,18 @@ describe('Tourisme', function () {
   const SYMBOL = 'TRM';
   const DECIMALS = 18;
   const INITIAL_SUPPLY = new BN('1000000' + '0'.repeat(DECIMALS));
+  const PRICE = new BN('500' + '0'.repeat(DECIMALS));
+  const _NUM = new BN(1);
+  const NOM = 'Yannis';
+  const EMAIL = 'pantz77@gmail.com';
+  const PASSWORD = 'mogwai77';
+  const AGE = new BN(40);
+  const DESTINATION = 'Paris';
+  const IS_TRANSPORT = true;
+  const IS_SEJOUR = true;
+  const IS_RESTAURATION = true;
+  const IS_ACTIVITES = false;
+  const IS_TOURS = false;
   const [owner, dev, admin, user1, user2, registryFunder] = accounts;
   const USER1_INITIAL_AMOUNT = new BN('10000' + '0'.repeat(DECIMALS));
 
@@ -19,10 +31,27 @@ describe('Tourisme', function () {
   });
 
   beforeEach(async function () {
+    this.timeout(0);
     this.app = await Tourisme.new(admin, { from: dev });
     this.tour = await TourToken.new(owner, INITIAL_SUPPLY, [this.app.address], { from: dev });
     await this.app.setTourToken(this.tour.address, { from: admin });
     await this.tour.transfer(user1, USER1_INITIAL_AMOUNT, { from: owner });
+  });
+
+  it('increments _clientIds by calling register()', async function () {
+    await this.app.register(NOM, EMAIL, PASSWORD, AGE);
+    expect(await this.app.clientbyId().to.be.bignumber.equal(new BN(1)));
+    /* await this.gameloot.loot(user1, loot2, { from: owner });
+    expect(await this.gameloot.tokenOfOwnerByIndex(user1, new BN(1)), 'id should be 2').to.be.bignumber.equal(
+      new BN(2),
+    );*/
+  });
+
+  it('add and get reservation data', async function () {
+    await this.app.choose_offer(DESTINATION, IS_TRANSPORT, IS_SEJOUR, IS_RESTAURATION, IS_ACTIVITES, IS_TOURS);
+    const result1 = await this.app.getOffer(_NUM);
+    console.log(result1);
+   
   });
 
   it('moves funds from user1 to user2', async function () {

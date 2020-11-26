@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-const { accounts, contract } = require('@openzeppelin/test-environment');
+/*const { accounts, contract } = require('@openzeppelin/test-environment');
 
 const { BN, expectRevert, time } = require('@openzeppelin/test-helpers');
 
@@ -34,4 +34,4 @@ describe('Tourisme', async function () {
   });
 });
 
-/* test à adapter à la version la plus recente du contrat Tourisme
+ test à adapter à la version la plus recente du contrat Tourisme */

@@ -13,11 +13,13 @@ module.exports = {
       network_id: '*', // Any network (default: none)
     },
     rinkeby: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${projectId}`),
+      // networkCheckTimeout: 100000,
+      provider: () => new HDWalletProvider(mnemonic, `wss://rinkeby.infura.io/ws/v3/1f879cc9d1a34e2b8400771cbc50c52e`),
       network_id: 4,
-      gas: 6721975000,
+      gas: 6721975,
       confirmations: 0,
       timeoutBlocks: 200,
+      //websockets: true,
       skipDryRun: true,
     },
   },

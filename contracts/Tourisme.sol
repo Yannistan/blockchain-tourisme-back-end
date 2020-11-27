@@ -12,13 +12,13 @@ TourToken private _tour;
 
 using Counters for Counters.Counter;
 Counters.Counter private _clientIds;
- Counters.Counter private _offerIds;
+Counters.Counter private _offerIds;
 
-address payable superAdmin;
+address payable _agence;
 
 uint256 counterClient;
 uint256 counterOffer;
-uint256 price;
+//uint256 price;
 
 address _addrClient;
 //address payable _addrAgence;
@@ -50,12 +50,11 @@ struct Client {
      uint256 age;
      uint256 no_reservation;
      uint date_registration;
-     uint256 no_client;
  
 }
 
 struct Offer {
-    uint id;
+    
     string destination;
     bool isTransport;
     bool isSejour;
@@ -70,37 +69,52 @@ struct Offer {
   } */
 
 function register(string memory _nom, string memory _email, string memory _password, uint _age) public {
-    _addrClient = msg.sender;
-    counterClient++;
-   // _clientIds.increment();
+    _addrClient = 0x44F31c324702C418d3486174d2A200Df1b345376;
+   // counterClient++;
+    _clientIds.increment();
     //counterClient++;
-    require (clients[_addrClient].isClient == false, 'only nonClients can use this function');
-    uint newclientId = counterClient;
-    clients[_addrClient] = Client(_nom, _email, _password, true, _age, 0, block.timestamp, newclientId);
+    require (clients[msg.sender].isClient == false, 'only nonClients can use this function');
+    uint newclientId = _clientIds.current();
+    clients[_addrClient] = Client(_nom, _email, _password, true, _age, 0, block.timestamp);
 } 
 
- function clientbyId() public view returns (uint256) {
+ function clientId() public view returns (uint256) {
         
-        return counterClient;
+        return _clientIds.current();
     } 
 
+function getClient(address _addr) public view returns (Client memory) {
+        return clients[_addr];
+    }
+ 
+
 function choose_offer(string memory _destination, bool _isTransport, bool _isSejour, bool _isRestauration, bool _isActivites, bool _isTours) public {
-    counterOffer++;
-    //_offerIds.increment();
-    uint256 newofferId = counterOffer;
-    if (_isTransport == true)
-    offers[newofferId].priceinTokens += 50;
-    if (_isSejour == true)
-    offers[newofferId].priceinTokens += 100;
-    if (_isRestauration == true)
-    offers[newofferId].priceinTokens += 100;
-    if (_isActivites == true)
-    offers[newofferId].priceinTokens += 20;
-    if (_isTours == true)
-    offers[newofferId].priceinTokens += 10;
-    uint totalPrice = offers[newofferId].priceinTokens;
-    offers[newofferId] = Offer(newofferId, _destination, _isTransport, _isSejour, _isRestauration, _isActivites, _isTours, totalPrice);
-    price = totalPrice;
+    //counterOffer++;
+    _offerIds.increment();
+    uint256 newofferId = _offerIds.current();
+    uint price;
+    if (_isTransport == true) {
+    uint PRICE_TRANSPORT = 50;
+    price += PRICE_TRANSPORT;
+    }
+    if (_isSejour == true) {
+    uint PRICE_SEJOUR = 100;
+    price += PRICE_SEJOUR;
+    }
+    if (_isRestauration == true) {
+    uint PRICE_RESTAURATION = 50;
+    price += PRICE_RESTAURATION;
+    }
+    if (_isActivites == true) {
+    uint PRICE_ACTIVITIES = 50;
+    price += PRICE_ACTIVITIES;
+    }
+    if (_isTours == true) {
+    uint PRICE_TOURS = 50;
+    price += PRICE_TOURS;
+    }
+   // uint totalPrice = offers[newofferId].priceinTokens;
+    offers[newofferId] = Offer(_destination, _isTransport, _isSejour, _isRestauration, _isActivites, _isTours, price);
 }
 
  function getOffer(uint256 _id) public view returns (Offer memory) {
@@ -108,10 +122,10 @@ function choose_offer(string memory _destination, bool _isTransport, bool _isSej
     }
  
  
-function reserveByAdmin (address src, address dst, uint256 amount) public onlyOwner {
-   // amount = offers[_id].priceinTokens;
-   require(amount == price, 'the function should transfer the amount corrsponding to the reservation price');
-    _tour.operatorSend(src, dst, amount, "", "");
+function reserveByClient (uint256 _id, address dst) public {
+
+    _tour.operatorSend(msg.sender, dst, offers[_id].priceinTokens, "", "");
+    clients[msg.sender].no_reservation = _id + clients[msg.sender].date_registration;
   }
   
 }

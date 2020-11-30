@@ -7,6 +7,7 @@ const Tourisme = contract.fromArtifact('Tourisme');
 const TourToken = contract.fromArtifact('TourToken');
 
 describe('Tourisme', function () {
+  this.timeout(0);
   const NAME = 'Tour';
   const SYMBOL = 'TRM';
   const DECIMALS = 18;
@@ -16,7 +17,6 @@ describe('Tourisme', function () {
   const NOM = 'Yannis';
   const EMAIL = 'pantz77@gmail.com';
   const PASSWORD = 'ldldldl77';
-  const AGE = new BN(40);
   const ADDR = '0x44F31c324702C418d3486174d2A200Df1b345376';
   const DESTINATION = 'Paris';
   const IS_TRANSPORT = true;
@@ -32,7 +32,6 @@ describe('Tourisme', function () {
   });
 
   beforeEach(async function () {
-    this.timeout(0);
     this.app = await Tourisme.new(admin, { from: dev });
     this.tour = await TourToken.new(owner, INITIAL_SUPPLY, [this.app.address], { from: dev });
     await this.app.setTourToken(this.tour.address, { from: admin });
@@ -40,7 +39,7 @@ describe('Tourisme', function () {
   });
 
   it('increments _clientIds by calling register()', async function () {
-    await this.app.register(NOM, EMAIL, PASSWORD, AGE);
+    await this.app.register(NOM, EMAIL, PASSWORD);
     expect(await this.app.clientId()).to.be.a.bignumber.equal(new BN(1));
     /* await this.gameloot.loot(user1, loot2, { from: owner });
     expect(await this.gameloot.tokenOfOwnerByIndex(user1, new BN(1)), 'id should be 2').to.be.bignumber.equal(
@@ -49,13 +48,12 @@ describe('Tourisme', function () {
   });
 
   it('add and get client data', async function () {
-    await this.app.register(NOM, EMAIL, PASSWORD, AGE, { from: dev });
+    await this.app.register(NOM, EMAIL, PASSWORD, { from: dev });
     const client1 = await this.app.getClient(ADDR);
     console.log(client1);
     expect(client1[0] == NOM).to.be.true;
     expect(client1[1] == EMAIL).to.be.true;
     expect(client1[2] == PASSWORD).to.be.true;
-    expect(client1[3].toString()).to.be.a.bignumber.equal(new BN(40));
   });
 
   it('add and get reservation data', async function () {
@@ -71,6 +69,7 @@ describe('Tourisme', function () {
   });
 
   it('moves funds from client to agency', async function () {
+    this.timeout(0);
     await this.app.reserveByClient(ID, user2, { from: admin });
     expect(await this.tour.balanceOf(user1)).to.be.a.bignumber.equal(new BN(0));
     expect(await this.tour.balanceOf(user2)).to.be.a.bignumber.equal(USER1_INITIAL_AMOUNT);

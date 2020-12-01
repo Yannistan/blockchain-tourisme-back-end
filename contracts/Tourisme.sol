@@ -31,6 +31,8 @@ mapping (uint256 => Offer) public offers;
 
 enum Destination { NewYork, Maldives, Vancouver, Barcelona }
 
+Destination internal _dest;
+
 //mapping (address => uint256) public balances_client;
 
 //mapping (address => uint256) public balances_agence;
@@ -46,7 +48,7 @@ function setTourToken(address tourAddress) external onlyOwner {
 
 /* Variables d'état */
 struct Client {
-     string nom;
+     string name;
      string email;
      string password;
      bool isClient;
@@ -66,14 +68,14 @@ struct Offer {
    uint256 priceinTokens;
 }
 
-function register(string memory _nom, string memory _email, string memory _password) public {
-    _addrClient = 0x44F31c324702C418d3486174d2A200Df1b345376;
+function register(string memory _name, string memory _email, string memory _password) public {
+   // _addrClient = 0x44F31c324702C418d3486174d2A200Df1b345376;
    // counterClient++;
     _clientIds.increment();
     //counterClient++;
     require (clients[msg.sender].isClient == false, 'only nonClients can use this function');
-    uint newclientId = _clientIds.current();
-    clients[_addrClient] = Client(_nom, _email, _password, true, 0, block.timestamp);
+    //uint newclientId = _clientIds.current();
+    clients[msg.sender] = Client(_name, _email, _password, true, 0, block.timestamp);
 } 
 
  function clientId() public view returns (uint256) {
@@ -85,7 +87,6 @@ function getClient(address _addr) public view returns (Client memory) {
         return clients[_addr];
     }
  
-
  function choose_offer(Destination _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public returns (uint256) {
     //counterOffer++;
 
@@ -194,12 +195,18 @@ function getClient(address _addr) public view returns (Client memory) {
    return _offerIds.current();
 }
 
+ /*function getDestination() public view returns (Destination)
+  {
+    return _dest;
+  } */
+
+
 function getPrice(uint256 _id) public view returns(uint256) {
     Offer memory c = offers[_id];
     return (c.priceinTokens);
 }
 
-    function getOffer(uint256 _id) public view returns (Offer memory) {
+function getOffer(uint256 _id) public view returns (Offer memory) {
         return offers[_id];
     } 
  

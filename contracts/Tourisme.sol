@@ -29,9 +29,9 @@ mapping (address => Client) public clients;
 
 mapping (uint256 => Offer) public offers;
 
-enum Destination { NewYork, Maldives, Vancouver, Barcelona }
+//enum Destination { NewYork, Maldives, Vancouver, Barcelona }
 
-Destination internal _dest;
+//Destination internal _dest;
 
 //mapping (address => uint256) public balances_client;
 
@@ -59,7 +59,7 @@ struct Client {
 
 struct Offer {
     
-    Destination _dest;
+    string destination;
   //  bool isTransport;
   //  bool isSejour;
   //  bool isRestauration;
@@ -87,7 +87,7 @@ function getClient(address _addr) public view returns (Client memory) {
         return clients[_addr];
     }
  
- function choose_offer(Destination _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public returns (uint256) {
+ function choose_offer(string memory _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public returns (uint256) {
     //counterOffer++;
 
     _offerIds.increment();
@@ -98,7 +98,7 @@ function getClient(address _addr) public view returns (Client memory) {
     uint PRICE_RESTAURATION;
     uint PRICE_ACTIVITIES;
     uint PRICE_TOURS;
-    if (_destination == Destination.NewYork) {
+    if (keccak256(bytes(_destination)) == keccak256(bytes("NewYork"))) {
         if (_isSejour == true) {
         PRICE_SEJOUR = 100;
         price +=100;
@@ -120,7 +120,7 @@ function getClient(address _addr) public view returns (Client memory) {
         price  += 50;
         }
     }
-    else if (_destination == Destination.Maldives) {
+    else if (keccak256(bytes(_destination)) == keccak256(bytes("Maldives"))) {
          if (_isSejour == true) {
         PRICE_SEJOUR = 150;
         price +=150;
@@ -142,7 +142,7 @@ function getClient(address _addr) public view returns (Client memory) {
         price  += 50;
         }
     }
-    else if (_destination == Destination.Vancouver) {
+    else if (keccak256(bytes(_destination)) == keccak256(bytes("Vancouver"))) {
         if (_isSejour == true) {
         PRICE_SEJOUR = 80;
         price +=80;
@@ -164,7 +164,7 @@ function getClient(address _addr) public view returns (Client memory) {
         price  += 30;
         }
     }
-    else if(_destination == Destination.Barcelona) {
+    else if(keccak256(bytes(_destination)) == keccak256(bytes("Barcelona"))) {
       if (_isSejour == true) {
         PRICE_SEJOUR = 50;
         price +=50;
@@ -203,6 +203,7 @@ function getClient(address _addr) public view returns (Client memory) {
 
 function getPrice(uint256 _id) public view returns(uint256) {
     Offer memory c = offers[_id];
+    
     return (c.priceinTokens);
 }
 

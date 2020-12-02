@@ -83,10 +83,10 @@ function getClient(address _addr) public view returns (Client memory) {
     }
  
  function choose_offer(string memory _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public {
-    //counterOffer++;
+    counterOffer++;
 
-    _offerIds.increment();
-    uint256 newofferId = _offerIds.current();
+    //_offerIds.increment();
+    uint256 newofferId = counterOffer;
     uint price;
     uint PRICE_SEJOUR;
     uint PRICE_TRANSPORT;
@@ -186,7 +186,7 @@ function getClient(address _addr) public view returns (Client memory) {
     offers[newofferId] = Offer(_destination, price);
    // totalprice = offers[newofferId].priceinTokens;
    // Offer memory c = offers[newofferId];
-   counterOffer = _offerIds.current();
+   //counterOffer = _offerIds.current();
    // return (c.priceinTokens);
   // return _offerIds.current();
 }

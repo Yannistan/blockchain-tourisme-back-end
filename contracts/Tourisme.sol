@@ -24,7 +24,7 @@ uint256 totalprice;
 address _addrClient;
 address payable _addrAgence;
 
- 
+
 mapping (address => Client) public clients;
 
 mapping (uint256 => Offer) public offers;
@@ -33,13 +33,8 @@ mapping (uint256 => Offer) public offers;
 
 //Destination internal _dest;
 
-//mapping (address => uint256) public balances_client;
-
-//mapping (address => uint256) public balances_agence;
-
  constructor(address owner) public {
     transferOwnership(owner);
-    
  }
 
 function setTourToken(address tourAddress) external onlyOwner {
@@ -87,7 +82,7 @@ function getClient(address _addr) public view returns (Client memory) {
         return clients[_addr];
     }
  
- function choose_offer(string memory _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public returns (uint256) {
+ function choose_offer(string memory _destination, bool _isSejour, bool _isTransport, bool _isRestauration, bool _isActivities, bool _isTours) public {
     //counterOffer++;
 
     _offerIds.increment();
@@ -191,15 +186,16 @@ function getClient(address _addr) public view returns (Client memory) {
     offers[newofferId] = Offer(_destination, price);
    // totalprice = offers[newofferId].priceinTokens;
    // Offer memory c = offers[newofferId];
+   counterOffer = _offerIds.current();
    // return (c.priceinTokens);
-   return _offerIds.current();
+  // return _offerIds.current();
 }
 
- /*function getDestination() public view returns (Destination)
-  {
-    return _dest;
-  } */
-
+ function getofferID() public view returns (uint256) {
+  
+    return counterOffer;
+  
+}
 
 function getPrice(uint256 _id) public view returns(uint256) {
     Offer memory c = offers[_id];

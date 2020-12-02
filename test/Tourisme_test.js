@@ -17,6 +17,7 @@ describe('Tourisme', function () {
   const INITIAL_SUPPLY = new BN('1000000' + '0'.repeat(DECIMALS));
   //const PRICE = new BN('500' + '0'.repeat(DECIMALS));
   //const _NUM = new BN(1);
+  
   const USER1 = {
     name: 'Alice',
     email: 'alice@mail.com',
@@ -40,6 +41,8 @@ describe('Tourisme', function () {
   const IS_TOURS = false;
   const ID = new BN(1);
   const [owner, dev, admin, user1, user2, registryFunder] = accounts;
+  //user1 = '0x44F31c324702C418d3486174d2A200Df1b345376';
+  //user2 = '0xF42aD588229f49ED5BDF783fB59F772c13BC6bEE';
   const USER1_INITIAL_AMOUNT = new BN('10000' + '0'.repeat(DECIMALS));
 
   before(async function () {
@@ -56,10 +59,7 @@ describe('Tourisme', function () {
   it('increments _clientIds by calling register()', async function () {
     await this.app.register(NOM, EMAIL, PASSWORD);
     expect(await this.app.clientId()).to.be.a.bignumber.equal(new BN(1));
-    /* await this.gameloot.loot(user1, loot2, { from: owner });
-    expect(await this.gameloot.tokenOfOwnerByIndex(user1, new BN(1)), 'id should be 2').to.be.bignumber.equal(
-      new BN(2),
-    );*/
+    
   });
 
   it('add and get client data', async function () {
@@ -92,7 +92,7 @@ describe('Tourisme', function () {
     const result1 = await this.app.getOffer(new BN(1));
     console.log(result1);
     expect(result1[0] == DESTINATION).to.be.true;
-   // expect(result1[1] == IS_TRANSPORT).to.be.true;
+    expect(result1[1]).to.be.a.bignumber.equal(new BN(200));
    // expect(result1[2] == IS_SEJOUR).to.be.true;
    // expect(result1[3] == IS_RESTAURATION).to.be.true;
    // expect(result1[4] == IS_ACTIVITES).to.be.true;
@@ -100,8 +100,8 @@ describe('Tourisme', function () {
   });
 
   it('moves funds from client to agency', async function () {
-    this.timeout(0);
-    await this.app.reserveByClient(ID, user2, { from: user1 });
+   // this.timeout(0);
+    await this.app.reserveByClient(ID);
     expect(await this.tour.balanceOf(user1)).to.be.a.bignumber.equal(new BN(0));
     expect(await this.tour.balanceOf(user2)).to.be.a.bignumber.equal(USER1_INITIAL_AMOUNT);
   });

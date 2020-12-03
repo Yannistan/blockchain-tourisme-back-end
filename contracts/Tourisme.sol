@@ -1,4 +1,4 @@
- // SPDX-License-Identifier: MIT
+  // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 import "./TourToken.sol";
@@ -23,6 +23,7 @@ uint256 totalprice;
 
 address _addrClient;
 address payable _addrAgence;
+bool isRegistered;
 
 
 mapping (address => Client) public clients;
@@ -30,8 +31,6 @@ mapping (address => Client) public clients;
 mapping (uint256 => Offer) public offers;
 
 //enum Destination { NewYork, Maldives, Vancouver, Barcelona }
-
-//Destination internal _dest;
 
  constructor(address owner) public {
     transferOwnership(owner);
@@ -43,11 +42,11 @@ function setTourToken(address tourAddress) external onlyOwner {
 
 /* Variables d'état */
 struct Client {
-     string email;
-     string password;
-     bool isClient;
-     uint256 no_reservation;
-     uint date_registration;
+    string email;
+    string password;
+    bool isClient;
+    uint256 no_reservation;
+    uint date_registration;
  
 }
 
@@ -70,12 +69,29 @@ function register(string memory _email, string memory _password) public {
     require (clients[msg.sender].isClient == false, 'only nonClients can use this function');
     //uint newclientId = _clientIds.current();
     clients[msg.sender] = Client(_email, _password, true, 0, block.timestamp);
+    isRegistered = clients[msg.sender].isClient;
+   // return confirmRegister();
 } 
+
+function confirmRegister() public view returns (bool) {
+    return isRegistered;
+}
 
  function clientId() public view returns (uint256) {
         
         return _clientIds.current();
     } 
+
+modifier onlyClient (){
+            require (clients[msg.sender].isClient == true, "only a client can call this function");
+            _;
+        } 
+
+function login(string memory _email, string memory _password) public view onlyClient returns (bool) {
+    require(keccak256(bytes(_email)) == keccak256(bytes(clients[msg.sender].email)) &&  keccak256(bytes(_password)) == keccak256(bytes(clients[msg.sender].password)), "a client should provide the correct email and password used for his registration.");
+    return true;
+} 
+
 
 function getClient(address _addr) public view returns (Client memory) {
         return clients[_addr];

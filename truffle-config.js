@@ -12,17 +12,17 @@ module.exports = {
       port: 8545, // Standard Ethereum port (default: none)
       network_id: '*', // Any network (default: none)
     },
-    rinkeby: {
+  //  rinkeby: {
       // networkCheckTimeout: 100000,
-      provider: () => new HDWalletProvider(mnemonic, `wss://rinkeby.infura.io/ws/v3/1f879cc9d1a34e2b8400771cbc50c52e`),
-     network_id: 4,
-      gas: 6721975,
-      confirmations: 0,
-      timeoutBlocks: 200,
+  //    provider: () => new HDWalletProvider(mnemonic, `wss://rinkeby.infura.io/ws/v3/1f879cc9d1a34e2b8400771cbc50c52e`),
+  //   network_id: 4,
+  //    gas: 6721975,
+  //    confirmations: 0,
+  //    timeoutBlocks: 200,
       //websockets: true,
-      skipDryRun: true,
-    },
-  },
+   //   skipDryRun: true,
+   // },
+ },
 
   // Set default mocha options here, use special reporters etc.
   mocha: {

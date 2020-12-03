@@ -2,7 +2,7 @@
 const { contract, accounts } = require('@openzeppelin/test-environment');
 const { BN, singletons } = require('@openzeppelin/test-helpers');
 const { expect } = require('chai');
-const _deploy_tourisme = require('../migrations/2_deploy_tourisme');
+
 
 const Tourisme = contract.fromArtifact('Tourisme');
 const TourToken = contract.fromArtifact('TourToken');

@@ -55,7 +55,7 @@ describe('Tourisme', function () {
   });
 
   it('increments _clientIds by calling register()', async function () {
-    await this.app.register(NOM, EMAIL, PASSWORD);
+    await this.app.register(EMAIL, PASSWORD);
     expect(await this.app.clientId()).to.be.a.bignumber.equal(new BN(1));
     
   });

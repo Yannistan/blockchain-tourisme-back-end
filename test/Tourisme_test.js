@@ -7,7 +7,7 @@ const _deploy_tourisme = require('../migrations/2_deploy_tourisme');
 const Tourisme = contract.fromArtifact('Tourisme');
 const TourToken = contract.fromArtifact('TourToken');
 const isSameClient = (_client, client) => {
-  return _client[0] === client.name && _client[1] === client.email && _client[2] === client.password;
+  return  _client[0] === client.email && _client[1] === client.password;
 };
 describe('Tourisme', function () {
   this.timeout(0);
@@ -19,17 +19,15 @@ describe('Tourisme', function () {
   //const _NUM = new BN(1);
   
   const USER1 = {
-    name: 'Alice',
     email: 'alice@mail.com',
     password: '1234',
   };
   const USER2 = {
-    name: 'Bob',
     email: 'bob@mail.com',
     password: '5678',
   };
   
-  const NOM = 'Yannis';
+  //const NOM = 'Yannis';
   const EMAIL = 'pantz77@gmail.com';
   const PASSWORD = 'ldldldl77';
   const ADDR = '0x44F31c324702C418d3486174d2A200Df1b345376';
@@ -63,17 +61,16 @@ describe('Tourisme', function () {
   });
 
   it('add and get client data', async function () {
-    await this.app.register(NOM, EMAIL, PASSWORD, { from: user1 });
+    await this.app.register(EMAIL, PASSWORD, { from: user1 });
     const client1 = await this.app.getClient(user1);
-    console.log(client1);
-    expect(client1[0] == NOM).to.be.true;
-    expect(client1[1] == EMAIL).to.be.true;
-    expect(client1[2] == PASSWORD).to.be.true;
+    console.log(client1);   
+    expect(client1[0] == EMAIL).to.be.true;
+    expect(client1[1] == PASSWORD).to.be.true;
   });
 
   it('add and get client data v2', async function () {
-    await this.app.register(USER1.name, USER1.email, USER1.password, { from: user1 });
-    await this.app.register(USER2.name, USER2.email, USER2.password, { from: user2 });
+    await this.app.register(USER1.email, USER1.password, { from: user1 });
+    await this.app.register(USER2.email, USER2.password, { from: user2 });
 
     const _client1 = await this.app.getClient(user1);
     const _client2 = await this.app.getClient(user2);

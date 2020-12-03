@@ -43,7 +43,6 @@ function setTourToken(address tourAddress) external onlyOwner {
 
 /* Variables d'état */
 struct Client {
-     string name;
      string email;
      string password;
      bool isClient;
@@ -63,14 +62,14 @@ struct Offer {
    uint256 priceinTokens;
 }
 
-function register(string memory _name, string memory _email, string memory _password) public {
+function register(string memory _email, string memory _password) public {
    // _addrClient = 0x44F31c324702C418d3486174d2A200Df1b345376;
    // counterClient++;
     _clientIds.increment();
     //counterClient++;
     require (clients[msg.sender].isClient == false, 'only nonClients can use this function');
     //uint newclientId = _clientIds.current();
-    clients[msg.sender] = Client(_name, _email, _password, true, 0, block.timestamp);
+    clients[msg.sender] = Client(_email, _password, true, 0, block.timestamp);
 } 
 
  function clientId() public view returns (uint256) {

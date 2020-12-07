@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract Tourisme is Ownable{
+contract Tourisme is Ownable {
 TourToken private _tour;
 
 
@@ -16,21 +16,17 @@ Counters.Counter private _offerIds;
 
 address payable _agence;
 
-
 uint256 counterClient;
 uint256 counterOffer;
 uint256 totalprice;
 
 address _addrClient;
 address payable _addrAgence;
-bool isRegistered;
-
+//bool isRegistered;
 
 mapping (address => Client) public clients;
 
 mapping (uint256 => Offer) public offers;
-
-//enum Destination { NewYork, Maldives, Vancouver, Barcelona }
 
  constructor(address owner) public {
     transferOwnership(owner);
@@ -42,39 +38,32 @@ function setTourToken(address tourAddress) external onlyOwner {
 
 /* Variables d'état */
 struct Client {
+    string name;
     string email;
-    string password;
-    bool isClient;
     uint256 no_reservation;
-    uint date_registration;
+    uint256 date_registration;
  
 }
 
 struct Offer {
     
     string destination;
-  //  bool isTransport;
-  //  bool isSejour;
-  //  bool isRestauration;
-  //  bool isActivites;
-  //  bool isTours;
    uint256 priceinTokens;
 }
 
-function register(string memory _email, string memory _password) public {
+function register(string memory _name, string memory _email) onlyNotRegistered public {
    // _addrClient = 0x44F31c324702C418d3486174d2A200Df1b345376;
-   // counterClient++;
+  
     _clientIds.increment();
     //counterClient++;
-    require (clients[msg.sender].isClient == false, 'only nonClients can use this function');
-    //uint newclientId = _clientIds.current();
-    clients[msg.sender] = Client(_email, _password, true, 0, block.timestamp);
-    isRegistered = clients[msg.sender].isClient;
+   
+    clients[msg.sender] = Client(_name, _email, 0, block.timestamp);
+   // isRegistered = clients[msg.sender].isClient;
    // return confirmRegister();
 } 
 
-function confirmRegister() public view returns (bool) {
-    return isRegistered;
+function isRegistered(address _addr) public view returns (bool) {
+    return clients[_addr].date_registration != 0;
 }
 
  function clientId() public view returns (uint256) {
@@ -83,14 +72,19 @@ function confirmRegister() public view returns (bool) {
     } 
 
 modifier onlyClient (){
-            require (clients[msg.sender].isClient == true, "only a client can call this function");
+            require (clients[msg.sender].date_registration != 0, "only a client can call this function");
             _;
         } 
 
-function login(string memory _email, string memory _password) public view onlyClient returns (bool) {
+modifier onlyNotRegistered (){
+            require (clients[msg.sender].date_registration == 0, "only a non-client can call this function");
+            _;
+        }
+
+/* function login(string memory _email, string memory _password) public view onlyClient returns (bool) {
     require(keccak256(bytes(_email)) == keccak256(bytes(clients[msg.sender].email)) &&  keccak256(bytes(_password)) == keccak256(bytes(clients[msg.sender].password)), "a client should provide the correct email and password used for his registration.");
     return true;
-} 
+} */
 
 
 function getClient(address _addr) public view returns (Client memory) {
@@ -197,13 +191,8 @@ function getClient(address _addr) public view returns (Client memory) {
         }
     }
     else revert("Invalid destination");
-   // uint totalPrice = offers[newofferId].priceinTokens;
+  
     offers[newofferId] = Offer(_destination, price);
-   // totalprice = offers[newofferId].priceinTokens;
-   // Offer memory c = offers[newofferId];
-   //counterOffer = _offerIds.current();
-   // return (c.priceinTokens);
-  // return _offerIds.current();
 }
 
  function getofferID() public view returns (uint256) {
@@ -214,7 +203,6 @@ function getClient(address _addr) public view returns (Client memory) {
 
 function getPrice(uint256 _id) public view returns(uint256) {
     Offer memory c = offers[_id];
-    
     return (c.priceinTokens);
 }
 
@@ -222,6 +210,7 @@ function getOffer(uint256 _id) public view returns (Offer memory) {
         return offers[_id];
     } 
  
+//function buyTourToken
  
 function reserveByClient(uint _id) public {
    

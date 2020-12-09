@@ -58,8 +58,7 @@ function register(string memory _name, string memory _email) onlyNotRegistered p
     //counterClient++;
    
     clients[msg.sender] = Client(_name, _email, 0, block.timestamp);
-   // isRegistered = clients[msg.sender].isClient;
-   // return confirmRegister();
+   
 } 
 
 function isRegistered(address _addr) public view returns (bool) {

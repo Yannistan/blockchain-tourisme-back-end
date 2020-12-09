@@ -17,7 +17,7 @@ describe('TourToken', async function () {
   });
 
   beforeEach(async function () {
-    this.tour = await TourToken.new(owner, INITIAL_SUPPLY, [], { from: dev });
+    this.tour = await TourToken.new( [], { from: dev });
   });
 
   it('has name', async function () {
@@ -32,11 +32,11 @@ describe('TourToken', async function () {
     expect(await this.tour.defaultOperators()).to.be.empty;
   });
 
-  it('transfers ownership from msg.sender to owner', async function () {
+ /* it('transfers ownership from msg.sender to owner', async function () {
     expect(await this.tour.owner()).to.equal(owner);
   });
 
   it('mints initial supply to owner', async function () {
     expect(await this.tour.balanceOf(owner)).to.be.a.bignumber.equal(INITIAL_SUPPLY);
-  });
+  }); */
 });

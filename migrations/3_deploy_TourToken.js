@@ -13,5 +13,5 @@ module.exports = async function (deployer, network, accounts) {
       }
      const tourisme = await Tourisme.deployed();
      await deployer.deploy(TourToken, [tourisme.address]);
-  //await deployer.deploy(TourToken);
+ 
 };

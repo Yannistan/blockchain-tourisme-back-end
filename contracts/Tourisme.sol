@@ -15,21 +15,23 @@ Counters.Counter private _clientIds;
 Counters.Counter private _offerIds;
 
 address payable _agence;
-
+uint256 price_token;
 uint256 counterClient;
 uint256 counterOffer;
 uint256 totalprice;
 
 address _addrClient;
-address payable _addrAgence;
+address payable addrAgence;
 //bool isRegistered;
 
 mapping (address => Client) public clients;
 
 mapping (uint256 => Offer) public offers;
 
- constructor(address owner) public {
+ constructor(address owner, uint256 _price, address payable _addrAgence) public {
     transferOwnership(owner);
+    price_token = _price;
+    addrAgence = _addrAgence;
  }
 
 function setTourToken(address tourAddress) external onlyOwner {
@@ -79,12 +81,6 @@ modifier onlyNotRegistered (){
             require (clients[msg.sender].date_registration == 0, "only a non-client can call this function");
             _;
         }
-
-/* function login(string memory _email, string memory _password) public view onlyClient returns (bool) {
-    require(keccak256(bytes(_email)) == keccak256(bytes(clients[msg.sender].email)) &&  keccak256(bytes(_password)) == keccak256(bytes(clients[msg.sender].password)), "a client should provide the correct email and password used for his registration.");
-    return true;
-} */
-
 
 function getClient(address _addr) public view returns (Client memory) {
         return clients[_addr];
@@ -209,11 +205,28 @@ function getOffer(uint256 _id) public view returns (Offer memory) {
         return offers[_id];
     } 
  
-//function buyTourToken
+
+function buyTokens(uint256 nbTokens) public payable returns (bool) {
+        
+        require(msg.value > 0, " minimum 1 wei");
+    
+        require(
+            (nbTokens * price_token) <= msg.value,
+            "Not enough Ether to purchase this number of tokens"
+        );
+        uint256 realPrice = (nbTokens * price_token);
+        uint256 remain = msg.value - realPrice;
+        addrAgence.transfer(realPrice);
+        _tour.operatorSend(addrAgence, msg.sender, nbTokens, "", "");
+        if (remain > 0) {
+            msg.sender.transfer(remain);
+        }
+        return true;
+    }
  
 function reserveByClient(uint _id) public {
    
-    _tour.operatorSend(msg.sender, _addrAgence, offers[_id].priceinTokens, "", "");
+    _tour.operatorSend(msg.sender, addrAgence, offers[_id].priceinTokens, "", "");
     clients[msg.sender].no_reservation = clients[msg.sender].date_registration;
   }
   

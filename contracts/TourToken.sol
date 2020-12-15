@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // contract deployed at 0xe7c00B5094790CD0e8ea41b82Dd4129d6f9248e8
 
 
- /// @title Création d'un token ERC77 ('TRM')
+ /// @title Création d'un token ERC777 ('TRM')
  /// @notice Un token qui prend en paramètre un _owner et un defaultOperators.
  /// @dev Tous les appels de fonction sont actuellement implémentés sans effets secondaires.
  

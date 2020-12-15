@@ -13,8 +13,6 @@ describe('Tourisme', function () {
   this.timeout(0);
   const NAME = 'Tour';
   const SYMBOL = 'TRM';
-  const DECIMALS = 18;
-  const INITIAL_SUPPLY = new BN('1000000' + '0'.repeat(DECIMALS));
   const USER1 = {
     name: 'Alice',
     email: 'alice@mail.com',
@@ -25,7 +23,6 @@ describe('Tourisme', function () {
   };
   
   const EMAIL = 'pantz77@gmail.com';
-  const ADDR = '0x44F31c324702C418d3486174d2A200Df1b345376';
   const DESTINATION = 'NewYork';
   const IS_TRANSPORT = true;
   const IS_SEJOUR = true;
@@ -34,17 +31,16 @@ describe('Tourisme', function () {
   const IS_TOURS = false;
   const ID = new BN(1);
   const [owner, dev, admin, user1, user2, registryFunder] = accounts;
-  const USER1_INITIAL_AMOUNT = new BN('10');
 
   before(async function () {
     this.erc1820 = await singletons.ERC1820Registry(registryFunder);
   });
 
   beforeEach(async function () {
-    this.app = await Tourisme.new(admin, { from: dev });
-    this.tour = await TourToken.new([this.app.address], { from: dev });
+    this.app = await Tourisme.new(admin, new BN('100000000000000000'), '0x57D8494097AD67A7E439807C03cd1A3E4d3d2a32', { from: dev });
+    this.tour = await TourToken.new(owner, [this.app.address], { from: dev });
     await this.app.setTourToken(this.tour.address, { from: admin });
-   // await this.tour.transfer(user1, USER1_INITIAL_AMOUNT, { from: owner });
+   
   });
 
   it('increments _clientIds by calling register()', async function () {
@@ -53,15 +49,15 @@ describe('Tourisme', function () {
     
   });
 
-  it('add and get client data', async function () {
+ /* it('add and get client data', async function () {
     await this.app.register(NAME, EMAIL, { from: user1 });
     const client1 = await this.app.getClient(user1);
     console.log(client1);   
     expect(client1[0] == NAME).to.be.true;
     expect(client1[1] == EMAIL).to.be.true;
-  });
+  }); */
 
-  it('add and get client data v2', async function () {
+  it('add and get client data', async function () {
     await this.app.register(USER1.name, USER1.email, { from: user1 });
     await this.app.register(USER2.name, USER2.email, { from: user2 });
 
@@ -72,8 +68,6 @@ describe('Tourisme', function () {
   });
 
  
-  
-
   it('add and get reservation data', async function () {
     await this.app.choose_offer(DESTINATION, IS_TRANSPORT, IS_SEJOUR, IS_RESTAURATION, IS_ACTIVITES, IS_TOURS);
     const result1 = await this.app.getOffer(new BN(1));
@@ -83,12 +77,4 @@ describe('Tourisme', function () {
   
   });
 
- /* it('moves funds from client to agency', async function () {
-   
-    await this.app.reserveByClient(ID);
-    expect(await this.tour.balanceOf(user1)).to.be.a.bignumber.equal(new BN(0));
-    expect(await this.tour.balanceOf(user2)).to.be.a.bignumber.equal(USER1_INITIAL_AMOUNT);
-  }); */
-
-  // it('reverts if moveToByOwner is not called by admin', async function () {});
 });

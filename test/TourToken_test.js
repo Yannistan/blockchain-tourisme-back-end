@@ -5,11 +5,12 @@ const { expect } = require('chai');
 
 const TourToken = contract.fromArtifact('TourToken');
 
+
 describe('TourToken', async function () {
+  this.timeout(0);
   const NAME = 'Tour';
   const SYMBOL = 'TRM';
-  const DECIMALS = 18;
-  const INITIAL_SUPPLY = new BN('1000000' + '0'.repeat(DECIMALS));
+ 
   const [owner, dev, registryFunder] = accounts;
 
   before(async function () {
@@ -17,7 +18,7 @@ describe('TourToken', async function () {
   });
 
   beforeEach(async function () {
-    this.tour = await TourToken.new( [], { from: dev });
+    this.tour = await TourToken.new( owner, [], { from: dev });
   });
 
   it('has name', async function () {
@@ -32,11 +33,4 @@ describe('TourToken', async function () {
     expect(await this.tour.defaultOperators()).to.be.empty;
   });
 
- /* it('transfers ownership from msg.sender to owner', async function () {
-    expect(await this.tour.owner()).to.equal(owner);
-  });
-
-  it('mints initial supply to owner', async function () {
-    expect(await this.tour.balanceOf(owner)).to.be.a.bignumber.equal(INITIAL_SUPPLY);
-  }); */
 });

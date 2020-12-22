@@ -1,4 +1,4 @@
- **Presentation du projet:**
+ **Presentation of the projet:**
   
 
 The application BxTravel is based in token economy and aims at simulated some functionnalities of a travel agency. To this end, two smart contracts were created; the contract of our App, Tourisme.sol,and  the contract TourToken.sol which creates the token issued by the agency, "TRM". This token is sold to the clients in order for them to pay a reservation. To create this token, we utilised the ERC777 standard from OpenZeppelin as the latter, contrary to its ERC20 counterpart, allows for a transfer of tokens without the need to call the approve() and the allowance() functions. The projet also contained a user interface created by the aid of React.js and Web3.js and implements the following functionnalities: registration of a user to the agency site, reservation of a voyage after selection among four travel destinations proposed by the agency and, finally, pre-payment of the reservation in "TRM" tokens. 

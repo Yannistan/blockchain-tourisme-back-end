@@ -1,14 +1,14 @@
 **Presentation du projet:**
 
-L'application BxTravel est basée sur l'economy de token et a pour but de simuler quelques fonctionnalités d'une agence de voyage. Pour cela, nous avons créé deux smart contrats, notamment le contract de notre application, Tourisme.sol et un contrat TourToken.sol qui génère le token utilisé dans notre Dapp, "TRM". Ce token est vendu par l'agence et il sera utilisé par un client pour payer sa reservation auprès l 'agence. Nous nous servons du contract ERC777 deslibrairies OpenZeppelin pour créer notre token car ce dernier, contrairement au contrat ERC20, permet d'effectuer un transfer de tokens sans avoir besoin de l'autorization de l'acheteur (fonction approve() du contrat ERC20). Le projet contient une interface graphique en React qui permet à un utilisateur de s'inscrire au site de l'agence, d'effectuer une reservation d'un voyage et, finalement, de regler le prix de sa reservationen tokens "TRM".
+L'application BxTravel est basée sur l'economy de token et a pour but de simuler quelques fonctionnalités d'une agence de voyage. Pour cela, nous avons créé deux smart contrats, notamment le contract de notre application, Tourisme.sol et un contrat TourToken.sol qui génère le token utilisé dans notre Dapp, "TRM". Ce token est vendu par l'agence et il sera utilisé par un client pour payer sa reservation auprès de l 'agence. Nous nous servons du contract ERC777 des librairies OpenZeppelin pour créer notre token car ce dernier, contrairement au contrat ERC20, permet d'effectuer un transfer de tokens sans avoir besoin de l'autorization de l'utilisateur (fonction approve() du contrat ERC20). Le projet contient une interface graphique en React qui permet à un utilisateur de s'inscrire au site de l'agence, d'effectuer une reservation d'un voyage et, finalement, de regler le prix de sa reservationen tokens "TRM".
 
 **Procedure d'installation**
 
 # Environment Dev Ethereum
 
 ##Installation du solc
-Etant donné que un grand nombre de librairies et de frameworks sont configurés avec la version 0.6.X nous avons installe la version la toute dernière 0.6.X: laversion 0.6.12
-Nous avons installé l'interface d eligne de commande de compilateur Solidity, solc à partir du script solc-select script. Ce dernier permet de switcher de façon rapide entre des differentes versions des compilateurs Solidity.
+Etant donné que un grand nombre de librairies et de frameworks sont configurés avec la version 0.6.X nous avons installé la version la toute dernière 0.6.X: la version 0.6.12
+Nous avons installé l'interface de ligne de commande du compilateur Solidity, solc à partir du script solc-select script. Ce dernier permet de switcher de façon rapide entre des differentes versions des compilateurs Solidity.
 
 ### Docker et Solc
 
@@ -233,12 +233,12 @@ Ce répertoire contient les scripts de migrations. Pour executer une migration :
 
 % truffle migrate --network NETWORK_NAME
 
-Networks sonts configure dans le fichier truffle-config.js.
+Networks sonts configurés dans le fichier truffle-config.js.
 
 Une migration declenche deux processus:
 
 1. Compilation.
-   Chaque fois que les fichiers .sol sont modifiés, une compilation s"execute et un artifact pour chacun de contrats est génèré dans ./build/contracts. un artifact est un fichier de type .json comprenant un ABI, code de byte est des divers informations sur le contrat. laversion du compilateur et d'autres options sont definies dans truffle-config.js.
+   Chaque fois que les fichiers .sol sont modifiés, une compilation s'execute et un artifact pour chacun de contrats est génèré dans ./build/contracts. un artifact est un fichier de type .json comprenant un ABI, code de byte est des divers informations sur le contrat. La version du compilateur et d'autres options sont definies dans truffle-config.js.
 2. Deploiement.
    Les contracts sont deployés en fonction des instructions decrites dans les fichiers javascript du dossier migrations/.
 
@@ -272,7 +272,7 @@ Nos contrats sont deployés sur le reseau Rinkeby.
 
 ##### Création d'un nouveau compte
 
-Afin d'effectuer une trabsaction sur le reseau Ethereum, nous avons besoin d'un nouveau compte Ethereum. Pour cela nous allons utiliser le package mnemonics qui retourne un mnemonic (un ensemble de 12 mots):
+Afin d'effectuer une transaction sur le reseau Ethereum, nous avons besoin d'un nouveau compte Ethereum. Pour cela nous allons utiliser le package mnemonics qui retourne un mnemonic (un ensemble de 12 mots):
 
 % npx mnemonics
 
@@ -284,7 +284,7 @@ Nous avons aussi installé dotenv qui est un module qui permet de charger des va
 
 Etant donné qu'on se sert des nodes publiques, il faudra signer toutes nos transactions de façon local. Pour cela, nous utiliseronsWe will use @truffle/hdwallet-provider qui est associé à notre mnemonic. Il faudra aussi diriger le fournisseur comment se connecter au testnet en au travers d' Infura endpoint.
 
-##### Installation di hdwallet-provider
+##### Installation du hdwallet-provider
 
 % yarn add --dev @truffle/hdwallet-provider
 

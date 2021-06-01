@@ -20,6 +20,6 @@ Nus avons également créé trois tests unitaires pour le contrat Tourisme.sol.
 1. 'increments clientIds by calling register()'
    Verification que l'ID d'un nouveau client est bien incrementé par la librairie Counters.
 2. 'add and get client data'
-   Verification que les dnnées d'un clinet sont bien enregistrées.
+   Verification que les données d'un clinet sont bien enregistrées.
 3. 'add and get reservation data'
    Verification que les elements d'une reservation sont bien enregistrés.
